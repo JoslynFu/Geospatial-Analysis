@@ -50,6 +50,28 @@ library(tidyverse)    #our old friend
 library(sf)           #to work with simple features data
 ```  
 
+```{r}
+tmp <- tempfile()
+download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zip", tmp)
+unzip(tmp)
+```
+
+```{r}
+#holc_brimingham <- holc %>%
+ # filter(city == "Brimingham")
+```
+
+```{r}
+#ndvi_birmingham <- raster::raster("../data/NDVI/composite_birmingham.tif")
+#shp_birmingham <- holc %>% filter(city == "Birmingham")
+```
+
+```{r}
+#shp <- 
+#shp_birmingham %>% 
+  #dplyr::mutate(mean_ndvi = raster::extract(ndvi_birmingham_raster, shp_birmingham, fun = mean))
+```
+
 # Exercise 1
 **Create a map which shows current (2019) mean NDVI across city redlining from the 1950s.**
 

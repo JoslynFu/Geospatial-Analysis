@@ -78,6 +78,28 @@ is used as proxy measure of vegetation health, cover and phenology (life
 cycle stage) over large areas. It is calculated using multiple bands
 from satellite images.
 
+``` r
+tmp <- tempfile()
+download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zip", tmp)
+unzip(tmp)
+```
+
+``` r
+#holc_brimingham <- holc %>%
+ # filter(city == "Brimingham")
+```
+
+``` r
+#ndvi_birmingham <- raster::raster("../data/NDVI/composite_birmingham.tif")
+#shp_birmingham <- holc %>% filter(city == "Birmingham")
+```
+
+``` r
+#shp <- 
+#shp_birmingham %>% 
+  #dplyr::mutate(mean_ndvi = raster::extract(ndvi_birmingham_raster, shp_birmingham, fun = mean))
+```
+
 # Exercise 1
 
 **Create a map which shows current (2019) mean NDVI across city
