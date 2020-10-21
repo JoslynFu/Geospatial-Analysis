@@ -85,20 +85,49 @@ unzip(tmp)
 ```
 
 ``` r
-#holc_brimingham <- holc %>%
- # filter(city == "Brimingham")
+holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
+```
+
+    ## Reading layer `holc_ad_data' from data source `/home/rstudio/geospatial-yuan-fu/assignment/fullshpfile/shapefile/holc_ad_data.shp' using driver `ESRI Shapefile'
+    ## Simple feature collection with 8878 features and 7 fields (with 3 geometries empty)
+    ## geometry type:  MULTIPOLYGON
+    ## dimension:      XY
+    ## bbox:           xmin: -122.7675 ymin: 25.70537 xmax: -70.9492 ymax: 47.72251
+    ## geographic CRS: WGS 84
+
+``` r
+holc_brimingham <- holc %>%
+ filter(city == "Brimingham")
 ```
 
 ``` r
-#ndvi_birmingham <- raster::raster("../data/NDVI/composite_birmingham.tif")
-#shp_birmingham <- holc %>% filter(city == "Birmingham")
+ndvi_birmingham <- raster::raster("../data/NDVI/composite_birmingham.tif")
+shp_birmingham <- holc %>% filter(city == "Birmingham")
 ```
 
 ``` r
-#shp <- 
-#shp_birmingham %>% 
-  #dplyr::mutate(mean_ndvi = raster::extract(ndvi_birmingham_raster, shp_birmingham, fun = mean))
+shp <- 
+ shp_birmingham %>% 
+  dplyr::mutate(mean_ndvi = raster::extract(ndvi_birmingham, shp_birmingham, fun = mean))
+
+shp
 ```
+
+    ## # A tibble: 60 x 9
+    ##    state city  name  holc_id holc_grade neighborho area_descr
+    ##    <chr> <chr> <chr> <chr>   <chr>           <int> <chr>     
+    ##  1 AL    Birm… Moun… A1      A                 244 "{ \"1c\"…
+    ##  2 AL    Birm… Redm… A2      A                 193 "{ \"3n\"…
+    ##  3 AL    Birm… Colo… A3      A                 206 "{ \"2c\"…
+    ##  4 AL    Birm… Grov… B1      B                 203 "{ \"1c\"…
+    ##  5 AL    Birm… Best… B10     B                 189 "{ \"5\" …
+    ##  6 AL    Birm… Coll… B11     B                 219 "{ \"4b\"…
+    ##  7 AL    Birm… Fair… B12     B                 227 "{ \"2a\"…
+    ##  8 AL    Birm… Red … B13     B                 202 "{ \"33\"…
+    ##  9 AL    Birm… Roeb… B14     B                 187 "{ \"1d\"…
+    ## 10 AL    Birm… Bett… B15     B                 194 "{ \"3l\"…
+    ## # … with 50 more rows, and 2 more variables: geometry <MULTIPOLYGON [°]>,
+    ## #   mean_ndvi[,1] <dbl>
 
 # Exercise 1
 
