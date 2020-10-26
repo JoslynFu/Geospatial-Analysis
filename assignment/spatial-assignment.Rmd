@@ -48,6 +48,7 @@ library(tmap)      #interactive maps, raster + vector layers
 library(raster)       #Main raster library
 library(tidyverse)    #our old friend
 library(sf)           #to work with simple features data
+library(stars)
 ```  
 
 ```{r}
@@ -56,29 +57,36 @@ download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zi
 unzip(tmp)
 ```
 
+Read in RedLining Data
 ```{r}
 holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
 ```
 
 ```{r}
-holc_brimingham <- holc %>%
- filter(city == "Brimingham")
+holc_brimingham <- holc %>% filter(city == "Brimingham")
 ```
 
 ```{r}
-ndvi_birmingham <- raster::raster("../data/NDVI/composite_birmingham.tif")
+ndvi_birmingham <- raster("../data/NDVI/composite_birmingham.tif")
+```
+```{r}
+plot(ndvi_birmingham)
+```
+
+```{r}
 shp_birmingham <- holc %>% filter(city == "Birmingham")
+shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
 ```
 
 ```{r}
-shp <- 
- shp_birmingham %>% 
+shp <- shp_birmingham %>% 
   dplyr::mutate(mean_ndvi = raster::extract(ndvi_birmingham, shp_birmingham, fun = mean))
 
 shp
 ```
-```{r}
 
+```{r}
+plot(shp_birmingham)
 ```
 
 # Exercise 1
