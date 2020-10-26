@@ -79,21 +79,52 @@ shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
 ```
 
 ```{r}
-shp <- shp_birmingham %>% 
+shp_birmingham2 <- shp_birmingham %>% 
   dplyr::mutate(mean_ndvi = raster::extract(ndvi_birmingham, shp_birmingham, fun = mean))
 
-shp
+shp_birmingham2
 ```
 
 ```{r}
-plot(shp_birmingham)
+shp_birmingham2 %>% 
+  mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
+  ggplot() + geom_sf(aes(fill = mean_ndvi))
 ```
 
 # Exercise 1
 **Create a map which shows current (2019) mean NDVI across city redlining from the 1950s.**
 
+Now, we would extract mean_NDVI values for different cities: 
+
+```{r}
+holc_baltimore <- holc %>% filter(city == "Baltimore")
+```
+```{r}
+ndvi_baltimore <- raster("../data/NDVI/composite_baltimore.tif")
+```
+```{r}
+shp_baltimore <- holc %>% 
+  filter(city == "Baltimore") %>%
+   dplyr::mutate(mean_ndvi = raster::extract(ndvi_baltimore, holc_baltimore, fun = mean))
+```
+```{r}
+shp_baltimore %>% 
+  mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
+  ggplot() + geom_sf(aes(fill = mean_ndvi))
+```
+
+
+
 # Exercise 2
 **Plot the average NDVI values in different neighborhoods as well as the distribution of pixel values across cities and neighborhoods. Show how the trends differ between cities.**
+```{r}
+shp <- shp_birmingham %>%
+  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham)
+```
+```{r}
+data.frame(x = unlist(shp$pixel_ndvi)) %>% 
+  ggplot(aes(x)) + geom_histogram()
+```
 
 # Exercise 3: 
 **Explain why considering systematic inequity and racism is important in the context of global change and developing solutions to the biodiversity crisis.**
