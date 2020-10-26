@@ -120,44 +120,60 @@ shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
 ![](spatial-assignment_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
-shp <- shp_birmingham %>% 
-  dplyr::mutate(mean_ndvi = raster::extract(ndvi_birmingham, shp_birmingham, fun = mean))
+#shp_birmingham2 <- shp_birmingham %>% 
+#  dplyr::mutate(mean_ndvi = raster::extract(ndvi_birmingham, shp_birmingham, fun = mean))
 
-shp
+#shp_birmingham2
 ```
-
-    ## # A tibble: 60 x 9
-    ##    state city  name  holc_id holc_grade neighborho area_descr
-    ##    <chr> <chr> <chr> <chr>   <chr>           <int> <chr>     
-    ##  1 AL    Birm… Moun… A1      A                 244 "{ \"1c\"…
-    ##  2 AL    Birm… Redm… A2      A                 193 "{ \"3n\"…
-    ##  3 AL    Birm… Colo… A3      A                 206 "{ \"2c\"…
-    ##  4 AL    Birm… Grov… B1      B                 203 "{ \"1c\"…
-    ##  5 AL    Birm… Best… B10     B                 189 "{ \"5\" …
-    ##  6 AL    Birm… Coll… B11     B                 219 "{ \"4b\"…
-    ##  7 AL    Birm… Fair… B12     B                 227 "{ \"2a\"…
-    ##  8 AL    Birm… Red … B13     B                 202 "{ \"33\"…
-    ##  9 AL    Birm… Roeb… B14     B                 187 "{ \"1d\"…
-    ## 10 AL    Birm… Bett… B15     B                 194 "{ \"3l\"…
-    ## # … with 50 more rows, and 2 more variables: geometry <MULTIPOLYGON [°]>,
-    ## #   mean_ndvi[,1] <dbl>
 
 ``` r
-plot(shp_birmingham)
+#shp_birmingham2 %>% 
+#  mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
+#  ggplot() + geom_sf(aes(fill = mean_ndvi))
 ```
-
-![](spatial-assignment_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 # Exercise 1
 
 **Create a map which shows current (2019) mean NDVI across city
 redlining from the 1950s.**
 
+Now, we would extract mean\_NDVI values for different cities:
+
+``` r
+#holc_baltimore <- holc %>% filter(city == "Baltimore")
+```
+
+``` r
+#ndvi_baltimore <- raster("../data/NDVI/composite_baltimore.tif")
+```
+
+``` r
+#shp_baltimore <- holc %>% 
+#  filter(city == "Baltimore") %>%
+#   dplyr::mutate(mean_ndvi = raster::extract(ndvi_baltimore, holc_baltimore, fun = mean))
+```
+
+``` r
+#shp_baltimore %>% 
+#  mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
+#  ggplot() + geom_sf(aes(fill = mean_ndvi))
+```
+
 # Exercise 2
 
 **Plot the average NDVI values in different neighborhoods as well as the
 distribution of pixel values across cities and neighborhoods. Show how
 the trends differ between cities.**
+
+``` r
+#shp <- shp_birmingham %>%
+#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham)
+```
+
+``` r
+#data.frame(x = unlist(shp$pixel_ndvi)) %>% 
+#  ggplot(aes(x)) + geom_histogram()
+```
 
 # Exercise 3:
 
