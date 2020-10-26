@@ -84,6 +84,8 @@ download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zi
 unzip(tmp)
 ```
 
+Read in RedLining Data
+
 ``` r
 holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
 ```
@@ -96,18 +98,28 @@ holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
     ## geographic CRS: WGS 84
 
 ``` r
-holc_brimingham <- holc %>%
- filter(city == "Brimingham")
+holc_brimingham <- holc %>% filter(city == "Brimingham")
 ```
 
 ``` r
-ndvi_birmingham <- raster::raster("../data/NDVI/composite_birmingham.tif")
+ndvi_birmingham <- raster("../data/NDVI/composite_birmingham.tif")
+```
+
+``` r
+plot(ndvi_birmingham)
+```
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+``` r
 shp_birmingham <- holc %>% filter(city == "Birmingham")
+shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
 ```
 
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
 ``` r
-shp <- 
- shp_birmingham %>% 
+shp <- shp_birmingham %>% 
   dplyr::mutate(mean_ndvi = raster::extract(ndvi_birmingham, shp_birmingham, fun = mean))
 
 shp
@@ -128,6 +140,12 @@ shp
     ## 10 AL    Birm… Bett… B15     B                 194 "{ \"3l\"…
     ## # … with 50 more rows, and 2 more variables: geometry <MULTIPOLYGON [°]>,
     ## #   mean_ndvi[,1] <dbl>
+
+``` r
+plot(shp_birmingham)
+```
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 # Exercise 1
 
