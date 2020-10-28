@@ -84,13 +84,14 @@ download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zi
 unzip(tmp)
 ```
 
-Read in RedLining Data
+Read in RedLining
+    Data
 
 ``` r
 holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
 ```
 
-    ## Reading layer `holc_ad_data' from data source `/home/runner/_work/geospatial-yuan-fu/geospatial-yuan-fu/assignment/fullshpfile/shapefile/holc_ad_data.shp' using driver `ESRI Shapefile'
+    ## Reading layer `holc_ad_data' from data source `/home/rstudio/geospatial-yuan-fu/assignment/fullshpfile/shapefile/holc_ad_data.shp' using driver `ESRI Shapefile'
     ## Simple feature collection with 8878 features and 7 fields (with 3 geometries empty)
     ## geometry type:  MULTIPOLYGON
     ## dimension:      XY
@@ -112,11 +113,9 @@ plot(ndvi_birmingham)
 ![](spatial-assignment_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
-shp_birmingham <- holc %>% filter(city == "Birmingham")
-shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
+#shp_birmingham <- holc %>% filter(city == "Birmingham")
+#shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
 ```
-
-![](spatial-assignment_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 #shp_birmingham2 <- shp_birmingham %>% 
@@ -147,8 +146,7 @@ Now, we would extract mean\_NDVI values for different cities:
 ```
 
 ``` r
-#shp_baltimore <- holc %>% 
-#  filter(city == "Baltimore") %>%
+#shp_baltimore <- holc_baltimore %>% 
 #   dplyr::mutate(mean_ndvi = raster::extract(ndvi_baltimore, holc_baltimore, fun = mean))
 ```
 
@@ -166,11 +164,21 @@ the trends differ between cities.**
 
 ``` r
 #shp <- shp_birmingham %>%
-#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham)
+#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham))
 ```
 
 ``` r
 #data.frame(x = unlist(shp$pixel_ndvi)) %>% 
+#  ggplot(aes(x)) + geom_histogram()
+```
+
+``` r
+#shp2 <- shp_baltimore %>%
+#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_baltimore, shp_baltimore))
+```
+
+``` r
+#data.frame(x = unlist(shp2$pixel_ndvi)) %>% 
 #  ggplot(aes(x)) + geom_histogram()
 ```
 
