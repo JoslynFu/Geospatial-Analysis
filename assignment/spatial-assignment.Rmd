@@ -74,8 +74,8 @@ plot(ndvi_birmingham)
 ```
 
 ```{r}
-shp_birmingham <- holc %>% filter(city == "Birmingham")
-shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
+#shp_birmingham <- holc %>% filter(city == "Birmingham")
+#shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
 ```
 
 ```{r}
@@ -103,8 +103,7 @@ Now, we would extract mean_NDVI values for different cities:
 #ndvi_baltimore <- raster("../data/NDVI/composite_baltimore.tif")
 ```
 ```{r}
-#shp_baltimore <- holc %>% 
-#  filter(city == "Baltimore") %>%
+#shp_baltimore <- holc_baltimore %>% 
 #   dplyr::mutate(mean_ndvi = raster::extract(ndvi_baltimore, holc_baltimore, fun = mean))
 ```
 ```{r}
@@ -119,10 +118,18 @@ Now, we would extract mean_NDVI values for different cities:
 **Plot the average NDVI values in different neighborhoods as well as the distribution of pixel values across cities and neighborhoods. Show how the trends differ between cities.**
 ```{r}
 #shp <- shp_birmingham %>%
-#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham)
+#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham))
 ```
 ```{r}
 #data.frame(x = unlist(shp$pixel_ndvi)) %>% 
+#  ggplot(aes(x)) + geom_histogram()
+```
+```{r}
+#shp2 <- shp_baltimore %>%
+#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_baltimore, shp_baltimore))
+```
+```{r}
+#data.frame(x = unlist(shp2$pixel_ndvi)) %>% 
 #  ggplot(aes(x)) + geom_histogram()
 ```
 

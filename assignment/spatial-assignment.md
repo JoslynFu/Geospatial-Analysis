@@ -112,11 +112,9 @@ plot(ndvi_birmingham)
 ![](spatial-assignment_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
-shp_birmingham <- holc %>% filter(city == "Birmingham")
-shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
+#shp_birmingham <- holc %>% filter(city == "Birmingham")
+#shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
 ```
-
-![](spatial-assignment_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 #shp_birmingham2 <- shp_birmingham %>% 
@@ -147,8 +145,7 @@ Now, we would extract mean\_NDVI values for different cities:
 ```
 
 ``` r
-#shp_baltimore <- holc %>% 
-#  filter(city == "Baltimore") %>%
+#shp_baltimore <- holc_baltimore %>% 
 #   dplyr::mutate(mean_ndvi = raster::extract(ndvi_baltimore, holc_baltimore, fun = mean))
 ```
 
@@ -166,11 +163,21 @@ the trends differ between cities.**
 
 ``` r
 #shp <- shp_birmingham %>%
-#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham)
+#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham))
 ```
 
 ``` r
 #data.frame(x = unlist(shp$pixel_ndvi)) %>% 
+#  ggplot(aes(x)) + geom_histogram()
+```
+
+``` r
+#shp2 <- shp_baltimore %>%
+#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_baltimore, shp_baltimore))
+```
+
+``` r
+#data.frame(x = unlist(shp2$pixel_ndvi)) %>% 
 #  ggplot(aes(x)) + geom_histogram()
 ```
 
