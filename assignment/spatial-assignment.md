@@ -1,17 +1,13 @@
 The ecological and evolutionary consequences of systemic racism
 ================
-Millie Chapman (GSI)
+Joslyn Fu & Kelly Yuan
 
-## Learning objectives
+# Objectives
 
-This module provides an introduction to the fundamentals of working with
-spatial vector and raster data in R while empirically exploring why
-systematic and structural racism is interwined with urban ecological
-processes. This module uses the Simple Features Access standard (ISO
-19125) and tidyverse-style workflow using the sf package and emerging
-ecosystem of r-spatial tools.
+We empirically explore why systematic and structural racism is
+interwined with urban ecological processes.
 
-# Exercise
+# Background Information
 
 In August 2020, [Christopher
 Schell](http://directory.tacoma.uw.edu/employee/cjschell) and collegues
@@ -84,13 +80,14 @@ download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zi
 unzip(tmp)
 ```
 
-Read in RedLining Data
+Read in RedLining
+    Data
 
 ``` r
 holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
 ```
 
-    ## Reading layer `holc_ad_data' from data source `/home/runner/_work/geospatial-yuan-fu/geospatial-yuan-fu/assignment/fullshpfile/shapefile/holc_ad_data.shp' using driver `ESRI Shapefile'
+    ## Reading layer `holc_ad_data' from data source `/home/rstudio/geospatial-yuan-fu/assignment/fullshpfile/shapefile/holc_ad_data.shp' using driver `ESRI Shapefile'
     ## Simple feature collection with 8878 features and 7 fields (with 3 geometries empty)
     ## geometry type:  MULTIPOLYGON
     ## dimension:      XY
@@ -112,48 +109,70 @@ plot(ndvi_birmingham)
 ![](spatial-assignment_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
-#shp_birmingham <- holc %>% filter(city == "Birmingham")
-#shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
+shp_birmingham <- holc %>% filter(city == "Birmingham")
+shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
 ```
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
-#shp_birmingham2 <- shp_birmingham %>% 
-#  dplyr::mutate(mean_ndvi = raster::extract(ndvi_birmingham, shp_birmingham, fun = mean))
+shp_birmingham2 <- shp_birmingham %>% 
+  dplyr::mutate(mean_ndvi = raster::extract(ndvi_birmingham, shp_birmingham, fun = mean))
 
-#shp_birmingham2
+shp_birmingham2
 ```
+
+    ## # A tibble: 60 x 9
+    ##    state city  name  holc_id holc_grade neighborho area_descr
+    ##    <chr> <chr> <chr> <chr>   <chr>           <int> <chr>     
+    ##  1 AL    Birm… Moun… A1      A                 244 "{ \"1c\"…
+    ##  2 AL    Birm… Redm… A2      A                 193 "{ \"3n\"…
+    ##  3 AL    Birm… Colo… A3      A                 206 "{ \"2c\"…
+    ##  4 AL    Birm… Grov… B1      B                 203 "{ \"1c\"…
+    ##  5 AL    Birm… Best… B10     B                 189 "{ \"5\" …
+    ##  6 AL    Birm… Coll… B11     B                 219 "{ \"4b\"…
+    ##  7 AL    Birm… Fair… B12     B                 227 "{ \"2a\"…
+    ##  8 AL    Birm… Red … B13     B                 202 "{ \"33\"…
+    ##  9 AL    Birm… Roeb… B14     B                 187 "{ \"1d\"…
+    ## 10 AL    Birm… Bett… B15     B                 194 "{ \"3l\"…
+    ## # … with 50 more rows, and 2 more variables: geometry <MULTIPOLYGON [°]>,
+    ## #   mean_ndvi[,1] <dbl>
 
 ``` r
-#shp_birmingham2 %>% 
-#  mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
-#  ggplot() + geom_sf(aes(fill = mean_ndvi))
+shp_birmingham2 %>% 
+  mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
+  ggplot() + geom_sf(aes(fill = mean_ndvi))
 ```
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 # Exercise 1
 
 **Create a map which shows current (2019) mean NDVI across city
 redlining from the 1950s.**
 
-Now, we would extract mean\_NDVI values for different cities:
+Now, we extract mean\_NDVI values for different cities:
 
 ``` r
-#holc_baltimore <- holc %>% filter(city == "Baltimore")
+holc_baltimore <- holc %>% filter(city == "Baltimore")
 ```
 
 ``` r
-#ndvi_baltimore <- raster("../data/NDVI/composite_baltimore.tif")
+ndvi_baltimore <- raster("../data/NDVI/composite_baltimore.tif")
 ```
 
 ``` r
-#shp_baltimore <- holc_baltimore %>% 
-#   dplyr::mutate(mean_ndvi = raster::extract(ndvi_baltimore, holc_baltimore, fun = mean))
+shp_baltimore <- holc_baltimore %>% 
+   dplyr::mutate(mean_ndvi = raster::extract(ndvi_baltimore, holc_baltimore, fun = mean))
 ```
 
 ``` r
-#shp_baltimore %>% 
-#  mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
-#  ggplot() + geom_sf(aes(fill = mean_ndvi))
+shp_baltimore %>% 
+  mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
+  ggplot() + geom_sf(aes(fill = mean_ndvi))
 ```
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 # Exercise 2
 
@@ -186,3 +205,24 @@ the trends differ between cities.**
 **Explain why considering systematic inequity and racism is important in
 the context of global change and developing solutions to the
 biodiversity crisis.**
+
+``` r
+holc_sf <- holc %>% filter(city == "San Francisco")
+```
+
+``` r
+ndvi_sf <- raster("../data/NDVI/composite_SF.tif")
+```
+
+``` r
+shp_sf <- holc_sf %>% 
+   dplyr::mutate(mean_ndvi = raster::extract(ndvi_sf, holc_sf, fun = mean))
+```
+
+``` r
+shp_sf %>% 
+  mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
+  ggplot() + geom_sf(aes(fill = mean_ndvi))
+```
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
