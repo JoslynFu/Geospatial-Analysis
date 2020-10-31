@@ -1,6 +1,6 @@
 ---
 title: "The ecological and evolutionary consequences of systemic racism"
-author: "Millie Chapman (GSI)"
+author: "Joslyn Fu & Kelly Yuan"
 output: 
   github_document:
     df_print: tibble
