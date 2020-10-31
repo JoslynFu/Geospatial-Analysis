@@ -1,6 +1,6 @@
 The ecological and evolutionary consequences of systemic racism
 ================
-Millie Chapman (GSI)
+Joslyn Fu & Kelly Yuan
 
 ## Learning objectives
 
