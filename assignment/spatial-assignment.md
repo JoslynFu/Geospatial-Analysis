@@ -47,8 +47,12 @@ download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zi
 unzip(tmp)
 ```
 
+<<<<<<< HEAD
 Read in RedLining
     Data.
+=======
+Read in RedLining Data.
+>>>>>>> 0872c14fbb45af8f8e89f4086ff741b19147d8b0
 
 ``` r
 holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
