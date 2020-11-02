@@ -47,18 +47,13 @@ download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zi
 unzip(tmp)
 ```
 
-<<<<<<< HEAD
-Read in RedLining
-    Data.
-=======
 Read in RedLining Data.
->>>>>>> 0872c14fbb45af8f8e89f4086ff741b19147d8b0
 
 ``` r
 holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
 ```
 
-    ## Reading layer `holc_ad_data' from data source `/home/rstudio/geospatial-yuan-fu/assignment/fullshpfile/shapefile/holc_ad_data.shp' using driver `ESRI Shapefile'
+    ## Reading layer `holc_ad_data' from data source `/home/runner/_work/geospatial-yuan-fu/geospatial-yuan-fu/assignment/fullshpfile/shapefile/holc_ad_data.shp' using driver `ESRI Shapefile'
     ## Simple feature collection with 8878 features and 7 fields (with 3 geometries empty)
     ## geometry type:  MULTIPOLYGON
     ## dimension:      XY
