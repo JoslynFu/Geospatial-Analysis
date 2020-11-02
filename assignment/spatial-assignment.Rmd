@@ -14,19 +14,9 @@ knitr::opts_chunk$set(messages = FALSE, cache = FALSE)
 We empirically explore why systematic and structural racism is interwined with urban ecological processes.
 
 # Background Information
-In August 2020, [Christopher Schell](http://directory.tacoma.uw.edu/employee/cjschell) and collegues published a review in *Science* on ['The ecological and evolutionary consequences of systemic racism in urban environments'](https://science.sciencemag.org/content/early/2020/08/12/science.aay4497) (DOI: 10.1126/science.aay4497), showing how systematic racism and classism  has significant impacts on ecologial and evolutionary processes within urban environments. Here we explore a subset of the data used to support these findings in this review and the broaded literature.
+In August 2020, [Christopher Schell](http://directory.tacoma.uw.edu/employee/cjschell) and collegues published a review in *Science* on ['The ecological and evolutionary consequences of systemic racism in urban environments'](https://science.sciencemag.org/content/early/2020/08/12/science.aay4497) (DOI: 10.1126/science.aay4497), showing how systematic racism and classism  has significant impacts on ecologial and evolutionary processes within urban environments. Here we explore a subset of the data used to support these findings in this review and the broaded literature. We are going to explore one metric for how structural racism and classism underpin landscape heterogeneity in cities.
 
-The [press release](https://www.washington.edu/news/2020/08/13/systemic-racism-has-consequences-for-all-life-in-cities/) on the paper is worth a read if you have the time:
-
-> “Racism is destroying our planet, and how we treat each other is essentially structural violence against our natural world,” said lead author Christopher Schell, an assistant professor of urban ecology at the University of Washington Tacoma. “Rather than just changing the conversation about how we treat each other, this paper will hopefully change the conversation about how we treat the natural world.”
-
-In the paper, Schell writes: 
-
- > "In multiple cases, neighborhood racial composition can be a stronger predictor of urban socio-ecological patterns than wealth."
-
-We are going to explore one metric for how structural racism and classism underpin landscape heterogeneity in cities.
-
-**Figure 2** in the Schell paper shows how NDVI (Normalized Difference Vegetation Index) tracks historical redlining.
+**Figure** in the Schell paper shows how NDVI (Normalized Difference Vegetation Index) tracks historical redlining.
 ![Fig. 1.](figures/fig2.png)
 
 We are going to recreate these city maps, and plot the distributions and mean vegetation patterns across cities to explore the structural inequality and racism that Schell et al highlight in their paper.
@@ -51,16 +41,21 @@ library(sf)           #to work with simple features data
 library(stars)
 ```  
 
+We first load the data.
 ```{r}
 tmp <- tempfile()
 download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zip", tmp)
 unzip(tmp)
 ```
 
-Read in RedLining Data
+Read in RedLining Data.
 ```{r}
 holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
 ```
+
+# Brimingham
+
+We begin our analysis by plotting the redlining grade and mean NDVI of Brimingham.
 
 ```{r}
 holc_brimingham <- holc %>% filter(city == "Brimingham")
@@ -69,9 +64,7 @@ holc_brimingham <- holc %>% filter(city == "Brimingham")
 ```{r}
 ndvi_birmingham <- raster("../data/NDVI/composite_birmingham.tif")
 ```
-```{r}
-plot(ndvi_birmingham)
-```
+
 
 ```{r}
 shp_birmingham <- holc %>% filter(city == "Birmingham")
@@ -91,10 +84,11 @@ shp_birmingham2 %>%
   ggplot() + geom_sf(aes(fill = mean_ndvi))
 ```
 
+According to the two graphs above, Birmingham is largely 
+
 # Exercise 1
 **Create a map which shows current (2019) mean NDVI across city redlining from the 1950s.**
 
-Now, we extract mean_NDVI values for different cities: 
 
 ```{r}
 holc_baltimore <- holc %>% filter(city == "Baltimore")
@@ -106,6 +100,12 @@ ndvi_baltimore <- raster("../data/NDVI/composite_baltimore.tif")
 shp_baltimore <- holc_baltimore %>% 
    dplyr::mutate(mean_ndvi = raster::extract(ndvi_baltimore, holc_baltimore, fun = mean))
 ```
+
+```{r}
+shp_baltimore %>% ggplot() + geom_sf(aes(fill = holc_grade))
+```
+
+
 ```{r}
 shp_baltimore %>% 
   mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
@@ -116,6 +116,40 @@ shp_baltimore %>%
 
 # Exercise 2
 **Plot the average NDVI values in different neighborhoods as well as the distribution of pixel values across cities and neighborhoods. Show how the trends differ between cities.**
+
+
+
+
+# Exercise 3: 
+**Explain why considering systematic inequity and racism is important in the context of global change and developing solutions to the biodiversity crisis.**
+
+```{r}
+holc_sf <- holc %>% filter(city == "San Francisco")
+```
+```{r}
+ndvi_sf <- raster("../data/NDVI/composite_SF.tif")
+```
+```{r}
+shp_sf <- holc_sf %>% 
+   dplyr::mutate(mean_ndvi = raster::extract(ndvi_sf, holc_sf, fun = mean))
+```
+
+
+```{r}
+shp_sf %>% ggplot() + geom_sf(aes(fill = holc_grade))
+```
+
+```{r}
+shp_sf %>% 
+  mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
+  ggplot() + geom_sf(aes(fill = mean_ndvi))
+```
+
+
+
+In the end, we compare the three cities by plotting the distribution of their mean NDVI value.
+
+
 ```{r}
 shp <- shp_birmingham %>%
   dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham))
@@ -135,27 +169,6 @@ data.frame(x = unlist(shp2$pixel_ndvi)) %>%
   ggplot(aes(x)) + geom_histogram()
 ```
 
-
-
-
-# Exercise 3: 
-**Explain why considering systematic inequity and racism is important in the context of global change and developing solutions to the biodiversity crisis.**
-
-```{r}
-holc_sf <- holc %>% filter(city == "San Francisco")
-```
-```{r}
-ndvi_sf <- raster("../data/NDVI/composite_SF.tif")
-```
-```{r}
-shp_sf <- holc_sf %>% 
-   dplyr::mutate(mean_ndvi = raster::extract(ndvi_sf, holc_sf, fun = mean))
-```
-```{r}
-shp_sf %>% 
-  mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
-  ggplot() + geom_sf(aes(fill = mean_ndvi))
-```
 
 ```{r}
 shp3 <- shp_sf %>%

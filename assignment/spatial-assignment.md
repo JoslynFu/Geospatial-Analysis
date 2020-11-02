@@ -17,28 +17,11 @@ environments’](https://science.sciencemag.org/content/early/2020/08/12/science
 (DOI: 10.1126/science.aay4497), showing how systematic racism and
 classism has significant impacts on ecologial and evolutionary processes
 within urban environments. Here we explore a subset of the data used to
-support these findings in this review and the broaded literature.
+support these findings in this review and the broaded literature. We are
+going to explore one metric for how structural racism and classism
+underpin landscape heterogeneity in cities.
 
-The [press
-release](https://www.washington.edu/news/2020/08/13/systemic-racism-has-consequences-for-all-life-in-cities/)
-on the paper is worth a read if you have the time:
-
-> “Racism is destroying our planet, and how we treat each other is
-> essentially structural violence against our natural world,” said lead
-> author Christopher Schell, an assistant professor of urban ecology at
-> the University of Washington Tacoma. “Rather than just changing the
-> conversation about how we treat each other, this paper will hopefully
-> change the conversation about how we treat the natural world.”
-
-In the paper, Schell writes:
-
-> “In multiple cases, neighborhood racial composition can be a stronger
-> predictor of urban socio-ecological patterns than wealth.”
-
-We are going to explore one metric for how structural racism and
-classism underpin landscape heterogeneity in cities.
-
-**Figure 2** in the Schell paper shows how NDVI (Normalized Difference
+**Figure** in the Schell paper shows how NDVI (Normalized Difference
 Vegetation Index) tracks historical redlining. ![Fig.
 1.](figures/fig2.png)
 
@@ -74,6 +57,8 @@ is used as proxy measure of vegetation health, cover and phenology (life
 cycle stage) over large areas. It is calculated using multiple bands
 from satellite images.
 
+We first load the data.
+
 ``` r
 tmp <- tempfile()
 download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zip", tmp)
@@ -81,7 +66,7 @@ unzip(tmp)
 ```
 
 Read in RedLining
-    Data
+    Data.
 
 ``` r
 holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
@@ -94,6 +79,11 @@ holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
     ## bbox:           xmin: -122.7675 ymin: 25.70537 xmax: -70.9492 ymax: 47.72251
     ## geographic CRS: WGS 84
 
+# Brimingham
+
+We begin our analysis by plotting the redlining grade and mean NDVI of
+Brimingham.
+
 ``` r
 holc_brimingham <- holc %>% filter(city == "Brimingham")
 ```
@@ -103,17 +93,11 @@ ndvi_birmingham <- raster("../data/NDVI/composite_birmingham.tif")
 ```
 
 ``` r
-plot(ndvi_birmingham)
-```
-
-![](spatial-assignment_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-
-``` r
 shp_birmingham <- holc %>% filter(city == "Birmingham")
 shp_birmingham %>% ggplot() + geom_sf(aes(fill = holc_grade))
 ```
 
-![](spatial-assignment_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 shp_birmingham2 <- shp_birmingham %>% 
@@ -144,14 +128,14 @@ shp_birmingham2 %>%
   ggplot() + geom_sf(aes(fill = mean_ndvi))
 ```
 
-![](spatial-assignment_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+According to the two graphs above, Birmingham is largely
 
 # Exercise 1
 
 **Create a map which shows current (2019) mean NDVI across city
 redlining from the 1950s.**
-
-Now, we extract mean\_NDVI values for different cities:
 
 ``` r
 holc_baltimore <- holc %>% filter(city == "Baltimore")
@@ -167,6 +151,12 @@ shp_baltimore <- holc_baltimore %>%
 ```
 
 ``` r
+shp_baltimore %>% ggplot() + geom_sf(aes(fill = holc_grade))
+```
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+``` r
 shp_baltimore %>% 
   mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
   ggplot() + geom_sf(aes(fill = mean_ndvi))
@@ -179,38 +169,6 @@ shp_baltimore %>%
 **Plot the average NDVI values in different neighborhoods as well as the
 distribution of pixel values across cities and neighborhoods. Show how
 the trends differ between cities.**
-
-``` r
-shp <- shp_birmingham %>%
-  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham))
-```
-
-``` r
-data.frame(x = unlist(shp$pixel_ndvi)) %>% 
-  ggplot(aes(x)) + geom_histogram()
-```
-
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-
-    ## Warning: Removed 24 rows containing non-finite values (stat_bin).
-
-![](spatial-assignment_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
-
-``` r
-shp2 <- shp_baltimore %>%
-  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_baltimore, shp_baltimore))
-```
-
-``` r
-data.frame(x = unlist(shp2$pixel_ndvi)) %>% 
-  ggplot(aes(x)) + geom_histogram()
-```
-
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-
-    ## Warning: Removed 16 rows containing non-finite values (stat_bin).
-
-![](spatial-assignment_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 # Exercise 3:
 
@@ -232,12 +190,53 @@ shp_sf <- holc_sf %>%
 ```
 
 ``` r
+shp_sf %>% ggplot() + geom_sf(aes(fill = holc_grade))
+```
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+``` r
 shp_sf %>% 
   mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
   ggplot() + geom_sf(aes(fill = mean_ndvi))
 ```
 
-![](spatial-assignment_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+In the end, we compare the three cities by plotting the distribution of
+their mean NDVI value.
+
+``` r
+shp <- shp_birmingham %>%
+  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham))
+```
+
+``` r
+data.frame(x = unlist(shp$pixel_ndvi)) %>% 
+  ggplot(aes(x)) + geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 24 rows containing non-finite values (stat_bin).
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+
+``` r
+shp2 <- shp_baltimore %>%
+  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_baltimore, shp_baltimore))
+```
+
+``` r
+data.frame(x = unlist(shp2$pixel_ndvi)) %>% 
+  ggplot(aes(x)) + geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 16 rows containing non-finite values (stat_bin).
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 ``` r
 shp3 <- shp_sf %>%
@@ -253,4 +252,4 @@ data.frame(x = unlist(shp3$pixel_ndvi)) %>%
 
     ## Warning: Removed 21 rows containing non-finite values (stat_bin).
 
-![](spatial-assignment_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
