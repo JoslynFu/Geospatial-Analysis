@@ -80,13 +80,14 @@ download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zi
 unzip(tmp)
 ```
 
-Read in RedLining Data
+Read in RedLining
+    Data
 
 ``` r
 holc <- st_read("fullshpfile/shapefile/holc_ad_data.shp")
 ```
 
-    ## Reading layer `holc_ad_data' from data source `/home/runner/_work/geospatial-yuan-fu/geospatial-yuan-fu/assignment/fullshpfile/shapefile/holc_ad_data.shp' using driver `ESRI Shapefile'
+    ## Reading layer `holc_ad_data' from data source `/home/rstudio/geospatial-yuan-fu/assignment/fullshpfile/shapefile/holc_ad_data.shp' using driver `ESRI Shapefile'
     ## Simple feature collection with 8878 features and 7 fields (with 3 geometries empty)
     ## geometry type:  MULTIPOLYGON
     ## dimension:      XY
@@ -180,24 +181,36 @@ distribution of pixel values across cities and neighborhoods. Show how
 the trends differ between cities.**
 
 ``` r
-#shp <- shp_birmingham %>%
-#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham))
+shp <- shp_birmingham %>%
+  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham))
 ```
 
 ``` r
-#data.frame(x = unlist(shp$pixel_ndvi)) %>% 
-#  ggplot(aes(x)) + geom_histogram()
+data.frame(x = unlist(shp$pixel_ndvi)) %>% 
+  ggplot(aes(x)) + geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 24 rows containing non-finite values (stat_bin).
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+``` r
+shp2 <- shp_baltimore %>%
+  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_baltimore, shp_baltimore))
 ```
 
 ``` r
-#shp2 <- shp_baltimore %>%
-#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_baltimore, shp_baltimore))
+data.frame(x = unlist(shp2$pixel_ndvi)) %>% 
+  ggplot(aes(x)) + geom_histogram()
 ```
 
-``` r
-#data.frame(x = unlist(shp2$pixel_ndvi)) %>% 
-#  ggplot(aes(x)) + geom_histogram()
-```
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 16 rows containing non-finite values (stat_bin).
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 # Exercise 3:
 
@@ -225,3 +238,19 @@ shp_sf %>%
 ```
 
 ![](spatial-assignment_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
+``` r
+shp3 <- shp_sf %>%
+  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_sf, shp_sf))
+```
+
+``` r
+data.frame(x = unlist(shp3$pixel_ndvi)) %>% 
+  ggplot(aes(x)) + geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 21 rows containing non-finite values (stat_bin).
+
+![](spatial-assignment_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->

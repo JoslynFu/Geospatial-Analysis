@@ -117,21 +117,26 @@ shp_baltimore %>%
 # Exercise 2
 **Plot the average NDVI values in different neighborhoods as well as the distribution of pixel values across cities and neighborhoods. Show how the trends differ between cities.**
 ```{r}
-#shp <- shp_birmingham %>%
-#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham))
+shp <- shp_birmingham %>%
+  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_birmingham, shp_birmingham))
 ```
 ```{r}
-#data.frame(x = unlist(shp$pixel_ndvi)) %>% 
-#  ggplot(aes(x)) + geom_histogram()
+data.frame(x = unlist(shp$pixel_ndvi)) %>% 
+  ggplot(aes(x)) + geom_histogram()
+```
+
+
+```{r}
+shp2 <- shp_baltimore %>%
+  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_baltimore, shp_baltimore))
 ```
 ```{r}
-#shp2 <- shp_baltimore %>%
-#  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_baltimore, shp_baltimore))
+data.frame(x = unlist(shp2$pixel_ndvi)) %>% 
+  ggplot(aes(x)) + geom_histogram()
 ```
-```{r}
-#data.frame(x = unlist(shp2$pixel_ndvi)) %>% 
-#  ggplot(aes(x)) + geom_histogram()
-```
+
+
+
 
 # Exercise 3: 
 **Explain why considering systematic inequity and racism is important in the context of global change and developing solutions to the biodiversity crisis.**
@@ -150,3 +155,13 @@ shp_sf <- holc_sf %>%
 shp_sf %>% 
   mutate(mean_ndvi = as.numeric(mean_ndvi)) %>%
   ggplot() + geom_sf(aes(fill = mean_ndvi))
+```
+
+```{r}
+shp3 <- shp_sf %>%
+  dplyr::mutate(pixel_ndvi = raster::extract(ndvi_sf, shp_sf))
+```
+```{r}
+data.frame(x = unlist(shp3$pixel_ndvi)) %>% 
+  ggplot(aes(x)) + geom_histogram()
+```
