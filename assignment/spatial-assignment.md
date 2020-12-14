@@ -1,4 +1,4 @@
-The ecological and evolutionary consequences of systemic racism
+The ecological and evolutionary consequences of systematic racism
 ================
 Joslyn Fu & Kelly Yuan
 
